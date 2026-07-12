@@ -6,4 +6,4 @@ __pycache__/
 .coverage
 .idea/
 .vscode/
-
+web_preview/*.log
