@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoSphere ESG Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar" aria-label="EcoSphere navigation">
+    <div class="brand">
+      <div class="brand-mark">ES</div>
+      <div>
+        <strong>EcoSphere</strong>
+        <span>ESG Management</span>
+      </div>
+    </div>
+
+    <nav class="side-nav">
+      <a href="#dashboard" data-section="dashboard" class="active">Dashboard</a>
+      <section>
+        <button type="button" data-section="environmental">Environmental</button>
+        <a href="#environmental" data-subtab="factors">Emission Factors</a>
+        <a href="#environmental" data-subtab="profiles">Product ESG Profiles</a>
+        <a href="#environmental" data-subtab="transactions">Carbon Transactions</a>
+        <a href="#environmental" data-subtab="goals">Environmental Goals</a>
+      </section>
+      <section>
+        <button type="button" data-section="social">Social</button>
+        <a href="#social" data-subtab="activities">CSR Activities</a>
+        <a href="#social" data-subtab="participation">Employee Participation</a>
+        <a href="#social" data-subtab="diversity">Diversity Dashboard</a>
+      </section>
+      <section>
+        <button type="button" data-section="governance">Governance</button>
+        <a href="#governance" data-subtab="policies">Policies</a>
+        <a href="#governance" data-subtab="acknowledgements">Policy Acknowledgements</a>
+        <a href="#governance" data-subtab="audits">Audits</a>
+        <a href="#governance" data-subtab="issues">Compliance Issues</a>
+      </section>
+      <section>
+        <button type="button" data-section="gamification">Gamification</button>
+        <a href="#gamification" data-subtab="challenges">Challenges</a>
+        <a href="#gamification" data-subtab="challengeParticipation">Challenge Participation</a>
+        <a href="#gamification" data-subtab="badges">Badges</a>
+        <a href="#gamification" data-subtab="rewards">Rewards</a>
+        <a href="#gamification" data-subtab="leaderboard">Leaderboard</a>
+      </section>
+      <section>
+        <button type="button" data-section="reports">Reports</button>
+        <a href="#reports" data-report="environmental">Environmental Report</a>
+        <a href="#reports" data-report="social">Social Report</a>
+        <a href="#reports" data-report="governance">Governance Report</a>
+        <a href="#reports" data-report="summary">ESG Summary Report</a>
+        <a href="#reports" data-report="custom">Custom Report Builder</a>
+      </section>
+      <section>
+        <button type="button" data-section="settings">Settings</button>
+        <a href="#settings" data-subtab="departments">Departments</a>
+        <a href="#settings" data-subtab="categories">Categories</a>
+        <a href="#settings" data-subtab="configuration">ESG Configuration</a>
+        <a href="#settings" data-subtab="notifications">Notification Settings</a>
+      </section>
+    </nav>
+  </aside>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Odoo Hackathon 2026 local preview</p>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <nav class="tabs" aria-label="Quick module navigation">
+        <button type="button" data-section="dashboard" class="active">Dashboard</button>
+        <button type="button" data-section="environmental">Environmental</button>
+        <button type="button" data-section="social">Social</button>
+        <button type="button" data-section="governance">Governance</button>
+        <button type="button" data-section="gamification">Gamification</button>
+        <button type="button" data-section="reports">Reports</button>
+        <button type="button" data-section="settings">Settings</button>
+      </nav>
+    </header>
+
+    <section id="dashboard" class="screen active">
+      <div class="score-grid">
+        <article class="score-card environmental">
+          <span>Environmental</span>
+          <strong id="envScore">82</strong>
+          <small>out of 100</small>
+        </article>
+        <article class="score-card social">
+          <span>Social</span>
+          <strong id="socialScore">76</strong>
+          <small>out of 100</small>
+        </article>
+        <article class="score-card governance">
+          <span>Governance</span>
+          <strong id="govScore">88</strong>
+          <small>out of 100</small>
+        </article>
+        <article class="score-card overall">
+          <span>Overall ESG Score</span>
+          <strong id="overallScore">82</strong>
+          <small>40 / 30 / 30 weighted</small>
+        </article>
+      </div>
+
+      <div class="dashboard-grid">
+        <section class="panel wide">
+          <div class="panel-head">
+            <div>
+              <h2>Emissions Trend</h2>
+              <p>12-month CO2e generated from ERP events</p>
+            </div>
+            <button id="simulatePurchase" type="button" class="primary">Confirm Purchase Order</button>
+          </div>
+          <div class="line-chart" id="emissionChart" aria-label="12 month emissions trend"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Department ESG Ranking</h2>
+              <p>Weighted department scores</p>
+            </div>
+          </div>
+          <div id="departmentRanking" class="ranking"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Recent Activity</h2>
+              <p>Transactions, approvals, and alerts</p>
+            </div>
+          </div>
+          <ol id="activityFeed" class="activity-feed"></ol>
+        </section>
+
+        <section class="panel actions-panel">
+          <h2>Quick Actions</h2>
+          <button type="button" data-section="environmental" data-subtab="transactions">Log Carbon Data</button>
+          <button type="button" data-section="gamification" data-subtab="challenges">Start Challenge</button>
+          <button type="button" data-section="reports">View Reports</button>
+        </section>
+      </div>
+    </section>
+
+    <section id="environmental" class="screen">
+      <div class="module-tabs" data-tabs-for="environmental">
+        <button type="button" data-subtab="factors" class="active">Emission Factors</button>
+        <button type="button" data-subtab="profiles">Product ESG Profiles</button>
+        <button type="button" data-subtab="transactions">Carbon Transactions</button>
+        <button type="button" data-subtab="goals">Environmental Goals</button>
+      </div>
+      <div class="info-strip">Carbon Transactions are auto-generated from Purchase, Manufacturing, Fleet, and Expense records when Auto Emission Calculation is on.</div>
+      <div class="subscreen active" data-subscreen="factors">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Activity Type</th><th>Unit</th><th>CO2e per Unit</th><th>Status</th></tr></thead>
+            <tbody id="factorRows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="subscreen" data-subscreen="profiles">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Product</th><th>Recyclability</th><th>Sustainable Source</th><th>Emission Factor</th></tr></thead>
+            <tbody id="profileRows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="subscreen" data-subscreen="transactions">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Department</th><th>Source</th><th>Quantity</th><th>Calculated CO2e</th><th>Status</th></tr></thead>
+            <tbody id="transactionRows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="subscreen" data-subscreen="goals">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Department</th><th>Target CO2</th><th>Current CO2</th><th>Progress</th><th>Deadline</th><th>Status</th></tr></thead>
+            <tbody id="goalRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="social" class="screen">
+      <div class="module-tabs" data-tabs-for="social">
+        <button type="button" data-subtab="activities" class="active">CSR Activities</button>
+        <button type="button" data-subtab="participation">Employee Participation</button>
+        <button type="button" data-subtab="diversity">Diversity Dashboard</button>
+      </div>
+      <div class="subscreen active" data-subscreen="activities">
+        <div id="csrCards" class="card-grid"></div>
+      </div>
+      <div class="subscreen" data-subscreen="participation">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Employee</th><th>Activity</th><th>Proof</th><th>Points</th><th>Approval Status</th><th>Actions</th></tr></thead>
+            <tbody id="participationRows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="subscreen" data-subscreen="diversity">
+        <div class="metric-grid" id="diversityCards"></div>
+      </div>
+    </section>
+
+    <section id="governance" class="screen">
+      <div class="module-tabs" data-tabs-for="governance">
+        <button type="button" data-subtab="policies" class="active">Policies</button>
+        <button type="button" data-subtab="acknowledgements">Policy Acknowledgements</button>
+        <button type="button" data-subtab="audits">Audits</button>
+        <button type="button" data-subtab="issues">Compliance Issues</button>
+      </div>
+      <div class="subscreen active" data-subscreen="policies">
+        <div class="table-wrap"><table><thead><tr><th>Policy</th><th>Published</th><th>Status</th><th>Acknowledgement Rate</th></tr></thead><tbody id="policyRows"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="acknowledgements">
+        <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Policy</th><th>Status</th><th>Acknowledged Date</th></tr></thead><tbody id="ackRows"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="audits">
+        <div class="table-wrap"><table><thead><tr><th>Department</th><th>Auditor</th><th>Date</th><th>Findings</th><th>Status</th></tr></thead><tbody id="auditRows"></tbody></table></div>
+        <h2 class="section-heading">Linked Compliance Issues</h2>
+        <div class="table-wrap"><table><thead><tr><th>Audit</th><th>Severity</th><th>Description</th><th>Owner</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="issueRowsLinked"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="issues">
+        <div class="table-wrap"><table><thead><tr><th>Audit</th><th>Severity</th><th>Description</th><th>Owner</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="issueRows"></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="gamification" class="screen">
+      <div class="module-tabs" data-tabs-for="gamification">
+        <button type="button" data-subtab="challenges" class="active">Challenges</button>
+        <button type="button" data-subtab="challengeParticipation">Challenge Participation</button>
+        <button type="button" data-subtab="badges">Badges</button>
+        <button type="button" data-subtab="rewards">Rewards</button>
+        <button type="button" data-subtab="leaderboard">Leaderboard</button>
+      </div>
+      <div class="subscreen active" data-subscreen="challenges">
+        <div class="filter-row" id="challengeFilters"></div>
+        <div id="challengeCards" class="card-grid"></div>
+      </div>
+      <div class="subscreen" data-subscreen="challengeParticipation">
+        <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Challenge</th><th>Progress</th><th>Proof</th><th>Approval</th><th>XP</th></tr></thead><tbody id="challengePartRows"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="badges"><div id="badgeGallery" class="badge-grid"></div></div>
+      <div class="subscreen" data-subscreen="rewards">
+        <div class="table-wrap"><table><thead><tr><th>Reward</th><th>Points Required</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody id="rewardRows"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="leaderboard"><div id="leaderboardRows" class="leaderboard"></div></div>
+    </section>
+
+    <section id="reports" class="screen">
+      <div class="report-grid">
+        <article class="report-card"><h2>Environmental Report</h2><p>Carbon transactions, goal progress, department breakdown.</p><button type="button">Generate</button></article>
+        <article class="report-card"><h2>Social Report</h2><p>CSR participation, diversity, and training summaries.</p><button type="button">Generate</button></article>
+        <article class="report-card"><h2>Governance Report</h2><p>Policy acknowledgements, audit findings, issue aging.</p><button type="button">Generate</button></article>
+        <article class="report-card"><h2>ESG Summary Report</h2><p>Environmental, Social, Governance, and Overall scores.</p><button type="button">Generate</button></article>
+      </div>
+      <section class="builder-panel">
+        <div>
+          <p class="eyebrow">Custom Report Builder</p>
+          <h2>Combine filters freely</h2>
+        </div>
+        <div class="chip-row">
+          <button>Date Range</button><button>Department</button><button>Module</button><button>Employee</button><button>Challenge</button><button>ESG Category</button>
+        </div>
+        <div class="builder-actions">
+          <button type="button" class="primary">Run</button>
+          <button type="button">Export PDF</button>
+          <button type="button">Export Excel</button>
+          <button type="button">Export CSV</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="settings" class="screen">
+      <div class="module-tabs" data-tabs-for="settings">
+        <button type="button" data-subtab="departments" class="active">Departments</button>
+        <button type="button" data-subtab="categories">Categories</button>
+        <button type="button" data-subtab="configuration">ESG Configuration</button>
+        <button type="button" data-subtab="notifications">Notification Settings</button>
+      </div>
+      <div class="subscreen active" data-subscreen="departments">
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Code</th><th>Head</th><th>Parent Dept</th><th>Employees</th><th>Status</th></tr></thead><tbody id="departmentRows"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="categories">
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Status</th></tr></thead><tbody id="categoryRows"></tbody></table></div>
+      </div>
+      <div class="subscreen" data-subscreen="configuration">
+        <div class="settings-grid">
+          <label><input type="checkbox" checked> Auto Emission Calculation</label>
+          <label><input type="checkbox" checked> Evidence Requirement</label>
+          <label><input type="checkbox" checked> Badge Auto-Award</label>
+          <label><input type="checkbox" checked> Compliance Email Alerts</label>
+        </div>
+        <div class="weight-panel"><span>Environmental 40%</span><span>Social 30%</span><span>Governance 30%</span></div>
+      </div>
+      <div class="subscreen" data-subscreen="notifications">
+        <div class="settings-grid">
+          <label><input type="checkbox" checked> New Compliance Issue raised</label>
+          <label><input type="checkbox" checked> Participation approval decision</label>
+          <label><input type="checkbox" checked> Policy acknowledgement reminder</label>
+          <label><input type="checkbox" checked> Badge unlocked</label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
+
