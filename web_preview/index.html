@@ -335,6 +335,36 @@
     </section>
   </main>
 
+  <section class="chatbot" aria-label="EcoSphere assistant">
+    <button id="chatLauncher" class="chat-launcher" type="button" aria-expanded="false" aria-controls="chatPanel">
+      <span class="chat-launcher-icon" aria-hidden="true">✦</span>
+      <span>Ask EcoSphere</span>
+    </button>
+    <div id="chatPanel" class="chat-panel" hidden>
+      <header class="chat-header">
+        <div class="chat-avatar" aria-hidden="true">✦</div>
+        <div>
+          <strong>EcoSphere Assistant</strong>
+          <span><i></i> Online · ESG guidance</span>
+        </div>
+        <button id="chatClose" class="chat-close" type="button" aria-label="Close assistant">×</button>
+      </header>
+      <div id="chatMessages" class="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
+        <div class="chat-message bot">Hi! I’m your EcoSphere guide. Ask me about ESG scores, emissions, compliance, or what to do next.</div>
+      </div>
+      <div class="chat-suggestions" aria-label="Suggested questions">
+        <button type="button" data-chat-prompt="What is our overall ESG score?">Overall ESG score</button>
+        <button type="button" data-chat-prompt="Which department needs attention?">Department at risk</button>
+        <button type="button" data-chat-prompt="Show compliance issues">Compliance issues</button>
+      </div>
+      <form id="chatForm" class="chat-form">
+        <label class="sr-only" for="chatInput">Ask the EcoSphere assistant</label>
+        <input id="chatInput" type="text" autocomplete="off" placeholder="Ask about your ESG data…">
+        <button type="submit" aria-label="Send message">↑</button>
+      </form>
+    </div>
+  </section>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>

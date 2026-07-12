@@ -296,6 +296,64 @@ function simulatePurchase() {
   toast("Golden path complete: Purchase Order -> Carbon Transaction -> Department Score -> Overall ESG Score.");
 }
 
+function overallScore() {
+  const { environmental, social, governance } = state.scores;
+  return Math.round(environmental * 0.4 + social * 0.3 + governance * 0.3);
+}
+
+function assistantReply(message) {
+  const query = message.toLowerCase();
+  const atRisk = state.departments.filter(dept => /at risk/i.test(dept.status));
+  const openIssues = state.issues.filter(issue => !/resolved/i.test(issue[5]));
+  const emissions = state.transactions.reduce((total, transaction) => total + transaction.co2, 0);
+
+  if (/overall|esg score|score/.test(query)) {
+    return `Your overall ESG score is ${overallScore()}/100, based on Environmental ${state.scores.environmental}, Social ${state.scores.social}, and Governance ${state.scores.governance}.`;
+  }
+  if (/department|attention|risk|weak/.test(query)) {
+    return atRisk.length
+      ? `${atRisk.map(dept => `${dept.name} is at risk (${dept.score}/100)`).join(". ")}. Its reduction goal is ${atRisk[0].current}t against a ${atRisk[0].target}t target by ${atRisk[0].deadline}.`
+      : "All departments are currently on track. Keep monitoring the environmental goals for early movement.";
+  }
+  if (/emission|carbon|co2|co₂/.test(query)) {
+    return `The preview currently contains ${state.transactions.length} carbon transactions totaling ${emissions.toFixed(1)} kg CO₂e. The latest transaction is ${state.transactions[0].source} at ${state.transactions[0].co2.toFixed(1)} kg CO₂e.`;
+  }
+  if (/compliance|issue|audit|governance/.test(query)) {
+    return `${openIssues.length} compliance issue${openIssues.length === 1 ? " is" : "s are"} still open or in progress. Highest priority: ${openIssues[0]?.[0] || "none"} (${openIssues[0]?.[1] || "n/a"}). Open Governance to review owners and due dates.`;
+  }
+  if (/challenge|badge|reward|gamif/.test(query)) {
+    const active = state.challenges.filter(challenge => challenge.state === "Active");
+    return `${active.length} challenge is active: ${active.map(challenge => challenge.title).join(", ")}. The leaderboard leader is ${state.leaderboard[0][1]} with ${state.leaderboard[0][2]} XP.`;
+  }
+  if (/help|what can|hello|hi\b/.test(query)) {
+    return "I can summarize ESG performance, flag departments that need attention, review carbon activity, explain compliance issues, and highlight gamification progress.";
+  }
+  return "I can help with ESG scores, emissions, department risks, compliance issues, and challenges. Try asking “Which department needs attention?”";
+}
+
+function addChatMessage(text, role) {
+  const messages = qs("#chatMessages");
+  if (!messages) return;
+  const bubble = document.createElement("div");
+  bubble.className = `chat-message ${role}`;
+  bubble.textContent = text;
+  messages.appendChild(bubble);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function openChat() {
+  const panel = qs("#chatPanel");
+  const launcher = qs("#chatLauncher");
+  panel.hidden = false;
+  launcher.setAttribute("aria-expanded", "true");
+  qs("#chatInput")?.focus();
+}
+
+function closeChat() {
+  qs("#chatPanel").hidden = true;
+  qs("#chatLauncher").setAttribute("aria-expanded", "false");
+}
+
 document.addEventListener("click", event => {
   const sectionTarget = event.target.closest("[data-section]");
   if (sectionTarget) {
@@ -423,6 +481,22 @@ function initParallax() {
 }
 
 qs("#simulatePurchase")?.addEventListener("click", simulatePurchase);
+qs("#chatLauncher")?.addEventListener("click", openChat);
+qs("#chatClose")?.addEventListener("click", closeChat);
+qs("#chatForm")?.addEventListener("submit", event => {
+  event.preventDefault();
+  const input = qs("#chatInput");
+  const message = input.value.trim();
+  if (!message) return;
+  addChatMessage(message, "user");
+  input.value = "";
+  window.setTimeout(() => addChatMessage(assistantReply(message), "bot"), 180);
+});
+qsa("[data-chat-prompt]").forEach(button => button.addEventListener("click", () => {
+  const prompt = button.dataset.chatPrompt;
+  addChatMessage(prompt, "user");
+  window.setTimeout(() => addChatMessage(assistantReply(prompt), "bot"), 180);
+}));
 
 injectNavIcons();
 renderAll();
