@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_ecosphere" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ecosphere</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="EcoSphere" string="EcoSphere" name="ecosphere">
+                    <block title="ESG Scoring Weights">
+                        <setting string="Environmental Weight" help="Contribution of environmental score to Overall ESG Score.">
+                            <field name="esg_environmental_weight"/>
+                        </setting>
+                        <setting string="Social Weight" help="Contribution of social score to Overall ESG Score.">
+                            <field name="esg_social_weight"/>
+                        </setting>
+                        <setting string="Governance Weight" help="Contribution of governance score to Overall ESG Score.">
+                            <field name="esg_governance_weight"/>
+                        </setting>
+                    </block>
+                    <block title="ESG Configuration Toggles">
+                        <setting string="Auto Emission Calculation" help="Automatically create carbon transactions from eligible ERP source records when later integrations are installed.">
+                            <field name="esg_auto_emission_calculation"/>
+                        </setting>
+                        <setting string="Evidence Requirement" help="Require proof attachments before approving CSR and challenge participation.">
+                            <field name="esg_evidence_requirement"/>
+                        </setting>
+                        <setting string="Badge Auto-Award" help="Automatically award earned badges after XP-affecting events.">
+                            <field name="esg_badge_auto_award"/>
+                        </setting>
+                        <setting string="Compliance Email Alerts" help="Send compliance issue email alerts when notification wiring is enabled.">
+                            <field name="esg_compliance_email_alerts"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

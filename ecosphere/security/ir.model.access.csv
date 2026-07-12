@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_esg_department_admin,esg.department admin,model_esg_department,group_esg_admin,1,1,1,1
+access_esg_department_manager,esg.department manager,model_esg_department,group_esg_manager,1,1,1,0
+access_esg_department_employee,esg.department employee,model_esg_department,group_esg_employee,1,0,0,0
+access_esg_department_auditor,esg.department auditor,model_esg_department,group_esg_auditor,1,0,0,0
+access_esg_category_admin,esg.category admin,model_esg_category,group_esg_admin,1,1,1,1
+access_esg_category_manager,esg.category manager,model_esg_category,group_esg_manager,1,1,1,0
+access_esg_category_employee,esg.category employee,model_esg_category,group_esg_employee,1,0,0,0
+access_esg_category_auditor,esg.category auditor,model_esg_category,group_esg_auditor,1,0,0,0
+

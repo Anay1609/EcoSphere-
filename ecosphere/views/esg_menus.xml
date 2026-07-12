@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_ecosphere_config_settings" model="ir.actions.act_window">
+        <field name="name">ESG Configuration</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'ecosphere'}</field>
+    </record>
+
+    <menuitem id="menu_ecosphere_root" name="EcoSphere" sequence="10"/>
+
+    <menuitem id="menu_ecosphere_dashboard" name="Dashboard" parent="menu_ecosphere_root" sequence="10"/>
+
+    <menuitem id="menu_ecosphere_environmental" name="Environmental" parent="menu_ecosphere_root" sequence="20"/>
+    <menuitem id="menu_ecosphere_emission_factors" name="Emission Factors" parent="menu_ecosphere_environmental" sequence="10"/>
+    <menuitem id="menu_ecosphere_product_profiles" name="Product ESG Profiles" parent="menu_ecosphere_environmental" sequence="20"/>
+    <menuitem id="menu_ecosphere_carbon_transactions" name="Carbon Transactions" parent="menu_ecosphere_environmental" sequence="30"/>
+    <menuitem id="menu_ecosphere_environmental_goals" name="Environmental Goals" parent="menu_ecosphere_environmental" sequence="40"/>
+
+    <menuitem id="menu_ecosphere_social" name="Social" parent="menu_ecosphere_root" sequence="30"/>
+    <menuitem id="menu_ecosphere_csr_activities" name="CSR Activities" parent="menu_ecosphere_social" sequence="10"/>
+    <menuitem id="menu_ecosphere_employee_participation" name="Employee Participation" parent="menu_ecosphere_social" sequence="20"/>
+    <menuitem id="menu_ecosphere_diversity_dashboard" name="Diversity Dashboard" parent="menu_ecosphere_social" sequence="30"/>
+
+    <menuitem id="menu_ecosphere_governance" name="Governance" parent="menu_ecosphere_root" sequence="40"/>
+    <menuitem id="menu_ecosphere_policies" name="Policies" parent="menu_ecosphere_governance" sequence="10"/>
+    <menuitem id="menu_ecosphere_policy_acknowledgements" name="Policy Acknowledgements" parent="menu_ecosphere_governance" sequence="20"/>
+    <menuitem id="menu_ecosphere_audits" name="Audits" parent="menu_ecosphere_governance" sequence="30"/>
+    <menuitem id="menu_ecosphere_compliance_issues" name="Compliance Issues" parent="menu_ecosphere_governance" sequence="40"/>
+
+    <menuitem id="menu_ecosphere_gamification" name="Gamification" parent="menu_ecosphere_root" sequence="50"/>
+    <menuitem id="menu_ecosphere_challenges" name="Challenges" parent="menu_ecosphere_gamification" sequence="10"/>
+    <menuitem id="menu_ecosphere_challenge_participation" name="Challenge Participation" parent="menu_ecosphere_gamification" sequence="20"/>
+    <menuitem id="menu_ecosphere_badges" name="Badges" parent="menu_ecosphere_gamification" sequence="30"/>
+    <menuitem id="menu_ecosphere_rewards" name="Rewards" parent="menu_ecosphere_gamification" sequence="40"/>
+    <menuitem id="menu_ecosphere_leaderboard" name="Leaderboard" parent="menu_ecosphere_gamification" sequence="50"/>
+
+    <menuitem id="menu_ecosphere_reports" name="Reports" parent="menu_ecosphere_root" sequence="60"/>
+    <menuitem id="menu_ecosphere_environmental_report" name="Environmental Report" parent="menu_ecosphere_reports" sequence="10"/>
+    <menuitem id="menu_ecosphere_social_report" name="Social Report" parent="menu_ecosphere_reports" sequence="20"/>
+    <menuitem id="menu_ecosphere_governance_report" name="Governance Report" parent="menu_ecosphere_reports" sequence="30"/>
+    <menuitem id="menu_ecosphere_summary_report" name="ESG Summary Report" parent="menu_ecosphere_reports" sequence="40"/>
+    <menuitem id="menu_ecosphere_custom_report_builder" name="Custom Report Builder" parent="menu_ecosphere_reports" sequence="50"/>
+
+    <menuitem id="menu_ecosphere_settings" name="Settings" parent="menu_ecosphere_root" sequence="70"/>
+    <menuitem id="menu_ecosphere_departments" name="Departments" parent="menu_ecosphere_settings" action="action_esg_department" sequence="10"/>
+    <menuitem id="menu_ecosphere_categories" name="Categories" parent="menu_ecosphere_settings" action="action_esg_category" sequence="20"/>
+    <menuitem id="menu_ecosphere_config" name="ESG Configuration" parent="menu_ecosphere_settings" action="action_ecosphere_config_settings" sequence="30"/>
+</odoo>
+
