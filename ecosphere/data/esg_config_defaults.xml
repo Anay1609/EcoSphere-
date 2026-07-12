@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="param_environmental_weight" model="ir.config_parameter">
+        <field name="key">ecosphere.environmental_weight</field>
+        <field name="value">40</field>
+    </record>
+    <record id="param_social_weight" model="ir.config_parameter">
+        <field name="key">ecosphere.social_weight</field>
+        <field name="value">30</field>
+    </record>
+    <record id="param_governance_weight" model="ir.config_parameter">
+        <field name="key">ecosphere.governance_weight</field>
+        <field name="value">30</field>
+    </record>
+    <record id="param_auto_emission_calculation" model="ir.config_parameter">
+        <field name="key">ecosphere.auto_emission_calculation</field>
+        <field name="value">True</field>
+    </record>
+    <record id="param_evidence_requirement" model="ir.config_parameter">
+        <field name="key">ecosphere.evidence_requirement</field>
+        <field name="value">True</field>
+    </record>
+    <record id="param_badge_auto_award" model="ir.config_parameter">
+        <field name="key">ecosphere.badge_auto_award</field>
+        <field name="value">True</field>
+    </record>
+    <record id="param_compliance_email_alerts" model="ir.config_parameter">
+        <field name="key">ecosphere.compliance_email_alerts</field>
+        <field name="value">True</field>
+    </record>
+</odoo>
+

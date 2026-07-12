@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_ecosphere_dashboard" model="ir.actions.act_window">
+        <field name="name">ESG Dashboard</field>
+        <field name="res_model">esg.department</field>
+        <field name="view_mode">dashboard,list,form</field>
+        <field name="view_id" ref="view_esg_department_dashboard"/>
+        <field name="context">{})</field>
+    </record>
+
+    <record id="view_esg_department_dashboard" model="ir.ui.view">
+        <field name="name">esg.department.dashboard</field>
+        <field name="model">esg.department</field>
+        <field name="arch" type="xml">
+            <dashboard>
+                <group>
+                    <field name="esg_score" string="Overall ESG Score"/>
+                    <field name="current_co2" string="Current CO2 (t)"/>
+                    <field name="target_co2" string="Target CO2 (t)"/>
+                    <field name="employee_count" string="Employees"/>
+                </group>
+            </dashboard>
+        </field>
+    </record>
+
+    <record id="view_esg_department_kanban" model="ir.ui.view">
+        <field name="name">esg.department.kanban</field>
+        <field name="model">esg.department</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="esg_score"/>
+                <field name="current_co2"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <strong class="o_kanban_record_title"><t t-esc="record.name.value"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="o_kanban_record_top">
+                                    <span class="o_kanban_record_title">
+                                        ESG Score: <t t-esc="record.esg_score.value"/>
+                                    </span>
+                                </div>
+                                <div class="o_kanban_record_top">
+                                    <span class="o_kanban_record_title">
+                                        CO2: <t t-esc="record.current_co2.value"/> / <t t-esc="record.target_co2.value"/> t
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_esg_carbon_transaction_kanban" model="ir.ui.view">
+        <field name="name">esg.carbon.transaction.kanban</field>
+        <field name="model">esg.carbon.transaction</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="co2e"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <strong class="o_kanban_record_title"><t t-esc="record.name.value"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="o_kanban_record_top">
+                                    <span class="o_kanban_record_title">
+                                        <t t-esc="record.department_id.value"/> - <t t-esc="record.co2e.value"/> kg
+                                    </span>
+                                </div>
+                                <div class="o_kanban_record_top">
+                                    <span class="o_kanban_record_title">
+                                        Status: <t t-esc="record.status.value"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_esg_carbon_transaction_graph" model="ir.ui.view">
+        <field name="name">esg.carbon.transaction.graph</field>
+        <field name="model">esg.carbon.transaction</field>
+        <field name="arch" type="xml">
+            <graph string="Carbon Transactions by Department">
+                <field name="department_id" type="row"/>
+                <field name="co2e" type="measure"/>
+            </graph>
+        </field>
+    </record>
+</odoo>
