@@ -32,6 +32,21 @@ class EsgDepartment(models.Model):
         string="Employees",
     )
     employee_count = fields.Integer(compute="_compute_employee_count")
+
+    # ESG scoring
+    carbon_transaction_ids = fields.One2many(
+        "esg.carbon.transaction", "department_id", string="Carbon Transactions"
+    )
+    current_co2 = fields.Float(
+        string="Current CO2 (t)", compute="_compute_current_co2", store=True, digits=(12, 2)
+    )
+    target_co2 = fields.Float(string="Target CO2 (t)", default=100.0)
+    environmental_score = fields.Float(string="Environmental Score", default=0.0)
+    social_score = fields.Float(string="Social Score", default=0.0)
+    governance_score = fields.Float(string="Governance Score", default=0.0)
+    esg_score = fields.Float(
+        string="Overall ESG Score", compute="_compute_esg_score", store=True, digits=(5, 1)
+    )
     status = fields.Selection(
         selection=[("active", "Active"), ("archived", "Archived")],
         default="active",
@@ -76,6 +91,30 @@ class EsgDepartment(models.Model):
     def _check_parent_recursion(self):
         if not self._check_recursion():
             raise ValidationError(_("An ESG department cannot be its own parent."))
+
+    @api.depends("carbon_transaction_ids.co2e")
+    def _compute_current_co2(self):
+        for department in self:
+            department.current_co2 = round(
+                sum(department.carbon_transaction_ids.mapped("co2e")), 2
+            )
+
+    @api.depends("environmental_score", "social_score", "governance_score")
+    def _compute_esg_score(self):
+        config = self.env["res.config.settings"].get_esg_configuration()
+        ew, sw, gw = (
+            config["environmental_weight"],
+            config["social_weight"],
+            config["governance_weight"],
+        )
+        total = (ew + sw + gw) or 100.0
+        for department in self:
+            department.esg_score = round(
+                (department.environmental_score * ew
+                 + department.social_score * sw
+                 + department.governance_score * gw) / total,
+                1,
+            )
 
     def action_archive(self):
         self.write({"status": "archived"})

@@ -7,12 +7,23 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div id="bg-canvas">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    <div class="floating-shape shape-4"></div>
+  </div>
+
   <aside class="sidebar" aria-label="EcoSphere navigation">
     <div class="brand">
       <div class="brand-mark">ES</div>
       <div>
         <strong>EcoSphere</strong>
-        <span>ESG Management</span>
+        <span>ESG Intelligence</span>
       </div>
     </div>
 
@@ -67,7 +78,7 @@
   <main class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Odoo Hackathon 2026 local preview</p>
+        <p class="eyebrow">Odoo Hackathon 2026</p>
         <h1 id="pageTitle">Dashboard</h1>
       </div>
       <nav class="tabs" aria-label="Quick module navigation">
@@ -112,7 +123,6 @@
               <h2>Emissions Trend</h2>
               <p>12-month CO2e generated from ERP events</p>
             </div>
-            <button id="simulatePurchase" type="button" class="primary">Confirm Purchase Order</button>
           </div>
           <div class="line-chart" id="emissionChart" aria-label="12 month emissions trend"></div>
         </section>
@@ -139,9 +149,22 @@
 
         <section class="panel actions-panel">
           <h2>Quick Actions</h2>
-          <button type="button" data-section="environmental" data-subtab="transactions">Log Carbon Data</button>
-          <button type="button" data-section="gamification" data-subtab="challenges">Start Challenge</button>
-          <button type="button" data-section="reports">View Reports</button>
+          <button id="simulatePurchase" type="button" class="primary" data-action="confirm-po">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+            Confirm Purchase Order
+          </button>
+          <button type="button" data-section="environmental" data-subtab="transactions">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Log Carbon Data
+          </button>
+          <button type="button" data-section="gamification" data-subtab="challenges">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0V4z"/></svg>
+            Start Challenge
+          </button>
+          <button type="button" data-section="reports">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17H7a2 2 0 01-2-2V5a2 2 0 012-2h7a2 2 0 012 2v2M9 13h10a2 2 0 012 2v4a2 2 0 01-2 2H9a2 2 0 01-2-2v-4a2 2 0 012-2z"/></svg>
+            View Reports
+          </button>
         </section>
       </div>
     </section>
@@ -268,7 +291,7 @@
           <h2>Combine filters freely</h2>
         </div>
         <div class="chip-row">
-          <button>Date Range</button><button>Department</button><button>Module</button><button>Employee</button><button>Challenge</button><button>ESG Category</button>
+          <button type="button">Date Range</button><button type="button">Department</button><button type="button">Module</button><button type="button">Employee</button><button type="button">Challenge</button><button type="button">ESG Category</button>
         </div>
         <div class="builder-actions">
           <button type="button" class="primary">Run</button>
@@ -316,4 +339,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-

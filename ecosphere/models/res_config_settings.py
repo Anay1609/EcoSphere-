@@ -93,3 +93,28 @@ class ResConfigSettings(models.TransientModel):
             "compliance_email_alerts": get_bool("ecosphere.compliance_email_alerts"),
         }
 
+    @api.model
+    def get_overall_esg(self):
+        """Aggregate department scores into an organisation-wide ESG summary
+        using the configured Environmental/Social/Governance weights."""
+        departments = self.env["esg.department"].search([])
+        if not departments:
+            return {"environmental": 0, "social": 0, "governance": 0, "overall": 0}
+        env = sum(departments.mapped("environmental_score")) / len(departments)
+        social = sum(departments.mapped("social_score")) / len(departments)
+        gov = sum(departments.mapped("governance_score")) / len(departments)
+        config = self.get_esg_configuration()
+        ew, sw, gw = (
+            config["environmental_weight"],
+            config["social_weight"],
+            config["governance_weight"],
+        )
+        total = (ew + sw + gw) or 100.0
+        overall = (env * ew + social * sw + gov * gw) / total
+        return {
+            "environmental": round(env, 1),
+            "social": round(social, 1),
+            "governance": round(gov, 1),
+            "overall": round(overall, 1),
+        }
+

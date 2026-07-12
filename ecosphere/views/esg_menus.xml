@@ -10,12 +10,12 @@
 
     <menuitem id="menu_ecosphere_root" name="EcoSphere" sequence="10"/>
 
-    <menuitem id="menu_ecosphere_dashboard" name="Dashboard" parent="menu_ecosphere_root" sequence="10"/>
+    <menuitem id="menu_ecosphere_dashboard" name="Dashboard" parent="menu_ecosphere_root" sequence="10" action="action_ecosphere_dashboard"/>
 
     <menuitem id="menu_ecosphere_environmental" name="Environmental" parent="menu_ecosphere_root" sequence="20"/>
-    <menuitem id="menu_ecosphere_emission_factors" name="Emission Factors" parent="menu_ecosphere_environmental" sequence="10"/>
+    <menuitem id="menu_ecosphere_emission_factors" name="Emission Factors" parent="menu_ecosphere_environmental" sequence="10" action="action_esg_emission_factor"/>
     <menuitem id="menu_ecosphere_product_profiles" name="Product ESG Profiles" parent="menu_ecosphere_environmental" sequence="20"/>
-    <menuitem id="menu_ecosphere_carbon_transactions" name="Carbon Transactions" parent="menu_ecosphere_environmental" sequence="30"/>
+    <menuitem id="menu_ecosphere_carbon_transactions" name="Carbon Transactions" parent="menu_ecosphere_environmental" sequence="30" action="action_esg_carbon_transaction"/>
     <menuitem id="menu_ecosphere_environmental_goals" name="Environmental Goals" parent="menu_ecosphere_environmental" sequence="40"/>
 
     <menuitem id="menu_ecosphere_social" name="Social" parent="menu_ecosphere_root" sequence="30"/>

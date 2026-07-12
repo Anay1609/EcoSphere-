@@ -11,9 +11,9 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         super().end_headers()
 
 
-def run():
-    server = ThreadingHTTPServer(("127.0.0.1", 8069), PreviewHandler)
-    print("EcoSphere preview running at http://localhost:8069/", flush=True)
+def run(port=8070):
+    server = ThreadingHTTPServer(("127.0.0.1", port), PreviewHandler)
+    print(f"EcoSphere preview running at http://localhost:{port}/", flush=True)
     server.serve_forever()
 
 

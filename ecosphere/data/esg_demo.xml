@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_carbon_transaction" model="ir.sequence">
+        <field name="name">ESG Carbon Transaction</field>
+        <field name="code">esg.carbon.transaction</field>
+        <field name="prefix">CT</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="factor_diesel" model="esg.emission.factor">
+        <field name="name">Diesel Fleet Fuel</field>
+        <field name="activity_type">fleet</field>
+        <field name="unit">liter</field>
+        <field name="co2e_per_unit">2.68</field>
+        <field name="status">active</field>
+    </record>
+    <record id="factor_aluminium" model="esg.emission.factor">
+        <field name="name">Recycled Aluminium</field>
+        <field name="activity_type">purchase</field>
+        <field name="unit">kg</field>
+        <field name="co2e_per_unit">0.52</field>
+        <field name="status">active</field>
+    </record>
+    <record id="factor_grid" model="esg.emission.factor">
+        <field name="name">Grid Electricity</field>
+        <field name="activity_type">manufacturing</field>
+        <field name="unit">kWh</field>
+        <field name="co2e_per_unit">0.71</field>
+        <field name="status">active</field>
+    </record>
+    <record id="factor_flight" model="esg.emission.factor">
+        <field name="name">Business Flight</field>
+        <field name="activity_type">expense</field>
+        <field name="unit">km</field>
+        <field name="co2e_per_unit">0.16</field>
+        <field name="status">active</field>
+    </record>
+
+    <record id="dept_manufacturing" model="esg.department">
+        <field name="name">Manufacturing</field>
+        <field name="code">MFG</field>
+        <field name="target_co2">100</field>
+        <field name="environmental_score">84</field>
+        <field name="social_score">80</field>
+        <field name="governance_score">90</field>
+        <field name="status">active</field>
+    </record>
+    <record id="dept_supply_chain" model="esg.department">
+        <field name="name">Supply Chain</field>
+        <field name="code">SCM</field>
+        <field name="target_co2">90</field>
+        <field name="environmental_score">81</field>
+        <field name="social_score">78</field>
+        <field name="governance_score">85</field>
+        <field name="status">active</field>
+    </record>
+    <record id="dept_people_ops" model="esg.department">
+        <field name="name">People Ops</field>
+        <field name="code">POP</field>
+        <field name="target_co2">40</field>
+        <field name="environmental_score">79</field>
+        <field name="social_score">88</field>
+        <field name="governance_score">82</field>
+        <field name="status">active</field>
+    </record>
+    <record id="dept_fleet" model="esg.department">
+        <field name="name">Fleet</field>
+        <field name="code">FLT</field>
+        <field name="target_co2">70</field>
+        <field name="environmental_score">73</field>
+        <field name="social_score">70</field>
+        <field name="governance_score">76</field>
+        <field name="status">active</field>
+    </record>
+
+    <record id="txn_1" model="esg.carbon.transaction">
+        <field name="source_document">Purchase PO00042</field>
+        <field name="department_id" ref="dept_supply_chain"/>
+        <field name="factor_id" ref="factor_aluminium"/>
+        <field name="quantity">120</field>
+        <field name="status">calculated</field>
+    </record>
+    <record id="txn_2" model="esg.carbon.transaction">
+        <field name="source_document">MO00031</field>
+        <field name="department_id" ref="dept_manufacturing"/>
+        <field name="factor_id" ref="factor_grid"/>
+        <field name="quantity">340</field>
+        <field name="status">calculated</field>
+    </record>
+    <record id="txn_3" model="esg.carbon.transaction">
+        <field name="source_document">Fleet Log FL018</field>
+        <field name="department_id" ref="dept_fleet"/>
+        <field name="factor_id" ref="factor_diesel"/>
+        <field name="quantity">55</field>
+        <field name="status">needs_review</field>
+    </record>
+</odoo>

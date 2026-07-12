@@ -123,23 +123,29 @@ function progress(value) {
 }
 
 function renderRows(id, rows, statusColumns = []) {
-  qs(`#${id}`).innerHTML = rows.map(row => {
+  const el = qs(`#${id}`);
+  if (!el) return;
+  el.innerHTML = rows.map(row => {
     return `<tr>${row.map((cell, index) => `<td>${statusColumns.includes(index) ? pill(cell) : cell}</td>`).join("")}</tr>`;
   }).join("");
 }
 
 function renderDashboard() {
-  qs("#envScore").textContent = state.scores.environmental;
-  qs("#socialScore").textContent = state.scores.social;
-  qs("#govScore").textContent = state.scores.governance;
-  const overall = Math.round(state.scores.environmental * 0.4 + state.scores.social * 0.3 + state.scores.governance * 0.3);
-  qs("#overallScore").textContent = overall;
+  const env = state.scores.environmental;
+  const social = state.scores.social;
+  const gov = state.scores.governance;
+  animateCounter("envScore", env);
+  animateCounter("socialScore", social);
+  animateCounter("govScore", gov);
+  const overall = Math.round(env * 0.4 + social * 0.3 + gov * 0.3);
+  animateCounter("overallScore", overall);
 
   const months = ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
   const max = Math.max(...state.emissions);
   qs("#emissionChart").innerHTML = state.emissions.map((value, index) => {
     const height = Math.max(18, Math.round(value / max * 200));
-    return `<div class="bar" title="${months[index]}: ${value}t CO2e" style="height:${height}px"><span>${months[index]}</span></div>`;
+    const delay = index * 0.05;
+    return `<div class="bar" style="height:${height}px;animation-delay:${delay}s"><span>${months[index]}</span><span class="tip">${months[index]}: ${value}t CO2e</span></div>`;
   }).join("");
 
   qs("#departmentRanking").innerHTML = [...state.departments]
@@ -150,6 +156,24 @@ function renderDashboard() {
   qs("#activityFeed").innerHTML = state.activityFeed
     .map(item => `<li><strong>${item[0]}</strong><small>${item[1]}</small></li>`)
     .join("");
+}
+
+function animateCounter(id, target) {
+  const el = qs(`#${id}`);
+  if (!el) return;
+  const start = parseInt(el.textContent) || 0;
+  const duration = 1200;
+  const startTime = performance.now();
+
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * eased);
+    el.textContent = current;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
 }
 
 function renderEnvironmental() {
@@ -321,7 +345,86 @@ document.addEventListener("click", event => {
   }
 });
 
-qs("#simulatePurchase").addEventListener("click", simulatePurchase);
+function injectNavIcons() {
+  const S = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  const sectionIcons = {
+    dashboard: `<path ${S} d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>`,
+    environmental: `<path ${S} d="M11 20A7 7 0 014 13c0-5 4-9 7-9 0 0 5 2 6 8a7 7 0 01-6 8z"/><path ${S} d="M11 20c0-5 2-9 6-11"/>`,
+    social: `<path ${S} d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle ${S} cx="9" cy="7" r="4"/><path ${S} d="M22 21v-2a4 4 0 00-3-3.87M16 3.13A4 4 0 0119 7"/>`,
+    governance: `<path ${S} d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path ${S} d="M9 12l2 2 4-4"/>`,
+    gamification: `<path ${S} d="M7 4h10v3a5 5 0 01-10 0V4z"/><path ${S} d="M7 5H4v2a3 3 0 003 3M17 5h3v2a3 3 0 01-3 3M9 14l-1 6 4-2 4 2-1-6"/>`,
+    reports: `<path ${S} d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>`,
+    settings: `<path ${S} d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path ${S} d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1L14.5 3h-5l-.3 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5L2 11a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.3 2.5h5l.3-2.5a7 7 0 001.7-1l2.4 1 2-3.5L22 13a7 7 0 00-3-1z"/>`
+  };
+  const subIcons = {
+    "Emission Factors": `<path ${S} d="M3 17l5-5 4 4 8-8"/><path ${S} d="M16 8h5v5"/>`,
+    "Product ESG Profiles": `<path ${S} d="M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>`,
+    "Carbon Transactions": `<path ${S} d="M7 7h.01M3 11l9-7 9 7v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>`,
+    "Environmental Goals": `<path ${S} d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path ${S} d="M12 7v5l3 2"/>`,
+    "CSR Activities": `<path ${S} d="M20 7L9 18l-5-5"/>`,
+    "Employee Participation": `<path ${S} d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle ${S} cx="9" cy="7" r="4"/>`,
+    "Diversity Dashboard": `<path ${S} d="M4 20v-2a4 4 0 014-4h8a4 4 0 014 4v2"/><circle ${S} cx="12" cy="7" r="4"/>`,
+    "Policies": `<path ${S} d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path ${S} d="M14 2v6h6M8 13h8M8 17h6"/>`,
+    "Policy Acknowledgements": `<path ${S} d="M9 11l3 3 8-8"/><path ${S} d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>`,
+    "Audits": `<path ${S} d="M11 3a8 8 0 106 13l4 4-2 2-4-4A8 8 0 0011 3z"/>`,
+    "Compliance Issues": `<path ${S} d="M12 9v4M12 17h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>`,
+    "Challenges": `<path ${S} d="M7 4h10v3a5 5 0 01-10 0V4z"/><path ${S} d="M9 14l-1 6 4-2 4 2-1-6"/>`,
+    "Challenge Participation": `<path ${S} d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle ${S} cx="9" cy="7" r="4"/>`,
+    "Badges": `<path ${S} d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 8.5l5.4-.8z"/>`,
+    "Rewards": `<path ${S} d="M20 12V8H4v4a4 4 0 008 0 4 4 0 008 0z"/><path ${S} d="M4 8H2v4a2 2 0 002 2M20 8h2v4a2 2 0 01-2 2"/>`,
+    "Leaderboard": `<path ${S} d="M6 9H4v11h16V9h-2M9 9V5h6v4M8 13h8"/>`,
+    "Environmental Report": `<path ${S} d="M4 20V10M10 20V4M16 20v-7"/>`,
+    "Social Report": `<path ${S} d="M4 20V10M10 20V4M16 20v-7"/>`,
+    "Governance Report": `<path ${S} d="M4 20V10M10 20V4M16 20v-7"/>`,
+    "ESG Summary Report": `<path ${S} d="M4 20V10M10 20V4M16 20v-7"/>`,
+    "Custom Report Builder": `<path ${S} d="M6 3v18M3 6h18M3 18h18M18 3v18"/>`,
+    "Departments": `<path ${S} d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/>`,
+    "Categories": `<path ${S} d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>`,
+    "ESG Configuration": `<path ${S} d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path ${S} d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1L14.5 3h-5l-.3 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5L2 11a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.3 2.5h5l.3-2.5a7 7 0 001.7-1l2.4 1 2-3.5L22 13a7 7 0 00-3-1z"/>`,
+    "Notification Settings": `<path ${S} d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/>`
+  };
+  const svg = (inner) => `<svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`;
+  qsa(".side-nav > a, .side-nav > button").forEach(el => {
+    const key = el.dataset.section;
+    if (sectionIcons[key]) el.insertAdjacentHTML("afterbegin", svg(sectionIcons[key]));
+  });
+  qsa(".side-nav section a").forEach(el => {
+    const label = el.textContent.trim();
+    el.insertAdjacentHTML("afterbegin", svg(subIcons[label] || `<circle ${S} cx="12" cy="12" r="3"/>`));
+  });
+}
 
+function init3DCards() {
+  qsa(".score-card, .panel, .report-card, .csr-card, .challenge-card, .metric-card, .badge-card, .leader-row").forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+    });
+  });
+}
+
+function initParallax() {
+  document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    qs(".orb-1").style.transform = `translate(${x}px, ${y}px)`;
+    qs(".orb-2").style.transform = `translate(${-x}px, ${-y}px)`;
+    qs(".orb-3").style.transform = `translate(${y}px, ${-x}px)`;
+  });
+}
+
+qs("#simulatePurchase")?.addEventListener("click", simulatePurchase);
+
+injectNavIcons();
 renderAll();
-
+init3DCards();
+initParallax();

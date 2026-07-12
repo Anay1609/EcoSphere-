@@ -13,15 +13,14 @@ class TestEcoSphereFoundation(SavepointCase):
         cls.Employee = cls.env["hr.employee"]
 
     def test_settings_weights_must_total_100(self):
-        settings = self.Settings.create(
-            {
-                "esg_environmental_weight": 50,
-                "esg_social_weight": 25,
-                "esg_governance_weight": 20,
-            }
-        )
         with self.assertRaises(ValidationError):
-            settings.set_values()
+            self.Settings.create(
+                {
+                    "esg_environmental_weight": 50,
+                    "esg_social_weight": 25,
+                    "esg_governance_weight": 20,
+                }
+            )
 
     def test_department_employee_count_uses_esg_department_link(self):
         department = self.Department.create({"name": "Sustainability", "code": "SUS"})
